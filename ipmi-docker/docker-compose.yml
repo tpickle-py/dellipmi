@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  ipmi-tools:
+    build: .
+    container_name: ipmi-tools
+    restart: unless-stopped
+    network_mode: "host"  # Required for IPMI connectivity
+    privileged: true      # Required for IPMI access
+    volumes:
+      - ./config:/opt/ipmi/config
+      - ./scripts:/opt/ipmi/scripts
+    environment:
+      - TZ=UTC
