@@ -133,12 +133,17 @@ scan_network() {
 }
 
 # Function to encrypt credentials
-encrypt_credentials() {
+add_creds_to_file() {
     local host="$1"
     local username="$2"
     local password="$3"
     local port="$4"
     local alias="$5"
+
+    # Check if host already exists
+    if [[ -f "${CREDS_DIR}/${alias}.json" ]]; then
+        echo "Host '$alias' already exists, skipping..."
+        return
     
     # Create host config file
     cat > "${CREDS_DIR}/${alias}.json" <<EOF
@@ -162,7 +167,7 @@ add_host_internal() {
     local alias="$5"
     
     # Store credentials
-    encrypt_credentials "$host" "$username" "$password" "$port" "$alias"
+    add_creds_to_file "$host" "$username" "$password" "$port" "$alias"
     echo "Host '$alias' added successfully"
 }
 
